@@ -219,190 +219,250 @@ export struct Trans {
   }
 
   build() {
-    Scroll() {
+    Column() {
+      // 顶部标题区域
       Column() {
-        Text('DATA · STREAM 控制台')
-          .fontSize(26)
-          .fontWeight(FontWeight.Bold)
-          .margin({ top: 24, bottom: 6 })
-
-        Text('接入实时流数据，回放 AI 推理结果')
-          .fontSize(13)
-          .fontColor('#8c8c8c')
-          .margin({ bottom: 20 })
-
-        Column() {
-          Text('数据流通道')
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .margin({ bottom: 10 })
-
-          TextInput({ placeholder: '请输入流媒体地址', text: this.streamUrl })
-            .onChange((value: string) => {
-              this.streamUrl = value;
-            })
-            .width('100%')
-            .margin({ bottom: 12 })
-
-          Row() {
-            Button('拉流并播放')
-              .backgroundColor('#1890ff')
-              .fontColor(Color.White)
-              .borderRadius(10)
-              .onClick(() => {
-                this.startStreamPlayback();
-              })
-              .layoutWeight(1)
-
-            Button('仅加载')
-              .margin({ left: 10 })
-              .backgroundColor('#d9d9d9')
-              .fontColor(Color.Black)
-              .borderRadius(10)
-              .onClick(() => {
-                this.loadMedia(this.streamUrl);
-              })
-              .layoutWeight(1)
-          }
-        }
-        .width('90%')
-        .padding(16)
-        .backgroundColor('#f5f5f5')
-        .borderRadius(12)
-        .margin({ bottom: 18 })
-
-        Column() {
-          Text(`播放器状态: ${this.playerState}`)
-            .fontSize(14)
-            .fontColor('#333333')
-
-          if (this.errorMessage) {
-            Text(this.errorMessage)
-              .fontSize(12)
-              .fontColor('#ff4d4f')
-              .margin({ top: 6 })
-          }
-
-          Row() {
-            Text(this.formatTime(this.currentTime))
-              .fontSize(12)
-
-            Slider({
-              value: this.currentTime,
-              min: 0,
-              max: this.duration > 0 ? this.duration : 100,
-              step: 1,
-              style: SliderStyle.OutSet
-            })
-            .layoutWeight(1)
-            .onChange((value: number) => {
-              this.seekTo(value);
-            })
-
-            Text(this.duration > 0 ? this.formatTime(this.duration) : '00:00')
-              .fontSize(12)
-          }
-          .width('100%')
-          .margin({ top: 14 })
-
-          Row() {
-            Button(this.isPlaying ? '暂停' : '播放')
-              .onClick(() => {
-                this.playOrPause();
-              })
-              .layoutWeight(1)
-              .margin({ right: 10 })
-
-            Button('停止')
-              .onClick(() => {
-                this.stopVideoStream();
-              })
-              .layoutWeight(1)
-              .margin({ right: 10 })
-
-            Button('刷新AI结果')
-              .onClick(() => {
-                this.pullAIResult();
-              })
-              .layoutWeight(1)
-          }
-          .margin({ top: 18 })
-        }
-        .width('90%')
-        .padding(16)
-        .backgroundColor('#ffffff')
-        .borderRadius(12)
-        .margin({ bottom: 18 })
-
-        Column() {
-          Text('帧捕获 / 数据抓取')
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .margin({ bottom: 10 })
-
-          Row() {
-            Button('抓取关键帧')
-              .backgroundColor('#722ed1')
-              .fontColor(Color.White)
-              .borderRadius(10)
-              .onClick(() => {
-                this.captureFrameInfo();
-              })
-              .layoutWeight(1)
-
-            Button('请求数据流')
-              .margin({ left: 10 })
-              .backgroundColor('#13c2c2')
-              .fontColor(Color.White)
-              .borderRadius(10)
-              .onClick(() => {
-                this.fetchStreamSample();
-              })
-              .layoutWeight(1)
-          }
-
-          Text(this.captureStatus)
-            .fontSize(12)
-            .fontColor('#595959')
-            .margin({ top: 10 })
-
-          Text(this.downloadStatus)
-            .fontSize(12)
-            .fontColor('#595959')
-            .margin({ top: 4 })
-        }
-        .width('90%')
-        .padding(16)
-        .backgroundColor('#fafafa')
-        .borderRadius(12)
-        .margin({ bottom: 18 })
-
-        Column() {
-          Text('AI 分析结果')
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .margin({ bottom: 10 })
-
-          Scroll() {
-            Text(this.aiResult)
-              .fontSize(14)
-              .textAlign(TextAlign.Start)
-              .width('100%')
-          }
-          .width('100%')
-          .height(220)
-          .border({ width: 1, color: '#dddddd', style: BorderStyle.Solid })
-          .borderRadius(12)
-          .padding(12)
-        }
-        .width('90%')
-        .margin({ bottom: 40 })
+        Text('DATA・STREAM 控制台')
+          .fontSize(18)
+          .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
+        
+        Text('接入实时数据流，回放 AI 推理结果')
+          .fontSize(14)
+          .fontColor($r('app.color.text_secondary'))
+          .margin({ top: 4 })
       }
       .width('100%')
-      .alignItems(HorizontalAlign.Center)
+      .padding({ left: 16, top: 16, bottom: 16 })
+      
+      Scroll() {
+        Column() {
+          // 数据流配置区
+          Column() {
+            Text('数据流配置')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 15 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+
+            Column() {
+              TextInput({ placeholder: '请输入流媒体地址', text: this.streamUrl })
+                .onChange((value: string) => {
+                  this.streamUrl = value;
+                })
+                .width('100%')
+                .height(40)
+                .borderRadius(4)
+                .margin({ bottom: 12 })
+              
+              Row() {
+                Button('拉流并播放')
+                  .backgroundColor($r('app.color.primary_blue'))
+                  .fontColor(Color.White)
+                  .borderRadius(8)
+                  .onClick(() => {
+                    this.startStreamPlayback();
+                  })
+                  .layoutWeight(1)
+
+                Button('仅加载')
+                  .margin({ left: 10 })
+                  .backgroundColor($r('app.color.card_background'))
+                  .fontColor($r('app.color.text_primary'))
+                  .borderRadius(8)
+                  .onClick(() => {
+                    this.loadMedia(this.streamUrl);
+                  })
+                  .layoutWeight(1)
+              }
+              .width('100%')
+              .height(40)
+            }
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 18 })
+
+          // 播放控制区
+          Column() {
+            Text('播放控制')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 15 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+            
+            Column() {
+              Text(`播放器状态: ${this.playerState}`)
+                .fontSize(14)
+                .fontColor($r('app.color.text_primary'))
+                .width('100%')
+                .textAlign(TextAlign.Start)
+
+              if (this.errorMessage) {
+                Text(this.errorMessage)
+                  .fontSize(12)
+                  .fontColor('#ff4d4f')
+                  .margin({ top: 6 })
+                  .width('100%')
+                  .textAlign(TextAlign.Start)
+              }
+
+              Row() {
+                Text(this.formatTime(this.currentTime))
+                  .fontSize(12)
+
+                Slider({
+                  value: this.currentTime,
+                  min: 0,
+                  max: this.duration > 0 ? this.duration : 100,
+                  step: 1,
+                  style: SliderStyle.OutSet
+                })
+                .layoutWeight(1)
+                .onChange((value: number) => {
+                  this.seekTo(value);
+                })
+
+                Text(this.duration > 0 ? this.formatTime(this.duration) : '00:00')
+                  .fontSize(12)
+              }
+              .width('100%')
+              .margin({ top: 14 })
+
+              Row() {
+                Button(this.isPlaying ? '暂停' : '播放')
+                  .backgroundColor($r('app.color.primary_blue'))
+                  .fontColor(Color.White)
+                  .borderRadius(8)
+                  .onClick(() => {
+                    this.playOrPause();
+                  })
+                  .layoutWeight(1)
+                  .margin({ right: 10 })
+
+                Button('停止')
+                  .backgroundColor($r('app.color.card_background'))
+                  .fontColor($r('app.color.text_primary'))
+                  .borderRadius(8)
+                  .onClick(() => {
+                    this.stopVideoStream();
+                  })
+                  .layoutWeight(1)
+                  .margin({ right: 10 })
+
+                Button('刷新AI结果')
+                  .backgroundColor($r('app.color.card_background'))
+                  .fontColor($r('app.color.text_primary'))
+                  .borderRadius(8)
+                  .onClick(() => {
+                    this.pullAIResult();
+                  })
+                  .layoutWeight(1)
+              }
+              .width('100%')
+              .height(40)
+              .margin({ top: 18 })
+            }
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 18 })
+
+          // 帧操作区
+          Column() {
+            Text('帧操作')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 15 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+
+            Row() {
+              Button('抓取关键帧')
+                .backgroundColor($r('app.color.primary_purple'))
+                .fontColor(Color.White)
+                .borderRadius(8)
+                .onClick(() => {
+                  this.captureFrameInfo();
+                })
+                .layoutWeight(1)
+
+              Button('请求数据流')
+                .margin({ left: 10 })
+                .backgroundColor($r('app.color.primary_cyan'))
+                .fontColor(Color.White)
+                .borderRadius(8)
+                .onClick(() => {
+                  this.fetchStreamSample();
+                })
+                .layoutWeight(1)
+            }
+            .width('100%')
+            .height(40)
+            .margin({ bottom: 10 })
+
+            Column() {
+              Text(this.captureStatus)
+                .fontSize(12)
+                .fontColor($r('app.color.text_secondary'))
+                .width('100%')
+                .textAlign(TextAlign.Start)
+                .margin({ bottom: 4 })
+
+              Text(this.downloadStatus)
+                .fontSize(12)
+                .fontColor($r('app.color.text_secondary'))
+                .width('100%')
+                .textAlign(TextAlign.Start)
+            }
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 18 })
+
+          // 结果展示区
+          Column() {
+            Text('AI 分析结果')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 10 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+
+            Scroll() {
+              Text(this.aiResult)
+                .fontSize(14)
+                .fontColor($r('app.color.text_primary'))
+                .textAlign(TextAlign.Start)
+                .width('100%')
+            }
+            .width('100%')
+            .height(200)
+            .border({ width: 1, color: '#dddddd', style: BorderStyle.Solid })
+            .borderRadius(8)
+            .padding(12)
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 20 })
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Center)
+      }
+      .layoutWeight(1)
+      .width('100%')
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#ffffff')
   }
 }

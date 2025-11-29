@@ -232,140 +232,160 @@ export struct Deal {
   }
 
   build() {
-    Scroll() {
+    Column() {
+      // 顶部标题区域
       Column() {
         Text(MODEL_NAME)
-          .fontSize(26)
-          .fontWeight(FontWeight.Bold)
-          .margin({ top: 24, bottom: 8 })
-
-        Text(MODEL_DESC)
-          .fontSize(13)
-          .fontColor('#8c8c8c')
-          .margin({ bottom: 18 })
-
-        Column() {
-          Text('检测模式')
-          .fontSize(16)
+          .fontSize(18)
           .fontWeight(FontWeight.Medium)
-          .margin({ bottom: 8 })
-
-          Row() {
-            ForEach(MODE_OPTIONS, (option: ModeOption) => {
-              Button(option.label)
-                .backgroundColor(option.value === this.detectionMode ? '#1890ff' : '#d9d9d9')
-                .fontColor(Color.White)
-                .borderRadius(18)
-                .onClick(() => {
-                  if (this.isLoading) {
-                    return;
-                  }
-                  this.detectionMode = option.value;
-                })
-                .layoutWeight(1)
-                .margin({ right: option.value === 'target' ? 0 : 10 });
-            }, (item: ModeOption, index: number) => `${item.value}-${index}`);
-          }
-
-          Text(this.getModeHint())
-            .fontSize(12)
-            .fontColor(Color.Gray)
-            .margin({ top: 8 })
-        }
-        .width('90%')
-        .padding(16)
-        .backgroundColor('#f5f5f5')
-        .borderRadius(12)
-        .margin({ bottom: 18 })
-
-        Column() {
-          Text('数据流通道')
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .margin({ bottom: 10 })
-
-          TextInput({ placeholder: '输入需要数据流的URL', text: this.imageUrl })
-            .onChange((value: string) => {
-              this.imageUrl = value;
-            })
-            .width('100%')
-            .margin({ bottom: 10 })
-
-          TextInput({ placeholder: '可选：补充环境或备注', text: this.remark })
-            .onChange((value: string) => {
-              this.remark = value;
-            })
-            .width('100%')
-        }
-        .width('90%')
-        .padding(16)
-        .backgroundColor('#fafafa')
-        .borderRadius(12)
-        .margin({ bottom: 18 })
-
-        Row() {
-          Text(`最近耗时: ${this.lastLatency > 0 ? `${this.lastLatency} ms` : '暂无数据'}`)
-            .fontSize(12)
-            .layoutWeight(1)
-
-          Text(this.isLoading ? '状态: 推理中' : '状态: 空闲')
-            .fontSize(12)
-            .fontColor(this.isLoading ? '#fa8c16' : '#52c41a')
-        }
-        .width('90%')
-        .margin({ bottom: 12 })
-
-        Row() {
-          Button(this.isLoading ? '推理中...' : '启动')
-            .backgroundColor('#1890ff')
-            .fontColor(Color.White)
-            .borderRadius(10)
-            .onClick(() => {
-              this.triggerDetection();
-            })
-            .layoutWeight(1)
-
-          Button('清空面板')
-            .margin({ left: 10 })
-            .backgroundColor('#d9d9d9')
-            .fontColor(Color.Black)
-            .borderRadius(10)
-            .onClick(() => {
-              this.clearResult();
-            })
-            .layoutWeight(1)
-        }
-        .width('90%')
-        .margin({ bottom: 18 })
-
-        Column() {
-          Text('AI 分析结果')
-            .fontSize(16)
-            .fontWeight(FontWeight.Bold)
-            .margin({ bottom: 10 })
-
-          Scroll() {
-            Text(this.resultText)
-              .fontSize(14)
-              .textAlign(TextAlign.Start)
-              .width('100%')
-          }
-          .width('100%')
-          .height(260)
-          .border({ width: 1, color: '#dddddd', style: BorderStyle.Solid })
-          .borderRadius(12)
-          .padding(12)
-        }
-        .width('90%')
-
-
+          .fontColor($r('app.color.text_primary'))
+        
+        Text(MODEL_DESC)
+          .fontSize(14)
+          .fontColor($r('app.color.text_secondary'))
+          .margin({ top: 4 })
       }
       .width('100%')
-      .alignItems(HorizontalAlign.Center)
+      .padding({ left: 16, top: 16, bottom: 16 })
+      
+      Scroll() {
+        Column() {
+          // 模式切换区
+          Column() {
+            Text('检测模式')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 15 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+            
+            Row() {
+              ForEach(MODE_OPTIONS, (option: ModeOption) => {
+                Button(option.label)
+                  .backgroundColor(option.value === this.detectionMode ? $r('app.color.primary_blue') : $r('app.color.card_background'))
+                  .fontColor(option.value === this.detectionMode ? '#FFFFFF' : $r('app.color.text_primary'))
+                  .borderRadius(4)
+                  .onClick(() => {
+                    if (this.isLoading) {
+                      return;
+                    }
+                    this.detectionMode = option.value;
+                  })
+                  .layoutWeight(1)
+                  .margin({ right: option.value === 'target' ? 0 : 10 });
+              }, (item: ModeOption, index: number) => `${item.value}-${index}`);
+            }
+            .width('100%')
+            .height(40)
+            
+            Text(this.getModeHint())
+              .fontSize(12)
+              .fontColor($r('app.color.text_secondary'))
+              .margin({ top: 10 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 18 })
+
+          // 数据流配置区
+          Column() {
+            Text('数据流配置')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 15 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+
+            Column() {
+              TextInput({ placeholder: '输入需要数据流的URL', text: this.imageUrl })
+                .onChange((value: string) => {
+                  this.imageUrl = value;
+                })
+                .width('100%')
+                .height(40)
+                .borderRadius(4)
+                .margin({ bottom: 10 })
+
+              TextInput({ placeholder: '可选：补充环境或备注', text: this.remark })
+                .onChange((value: string) => {
+                  this.remark = value;
+                })
+                .width('100%')
+                .height(40)
+                .borderRadius(4)
+            }
+            .width('100%')
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 18 })
+
+          // 操作按钮区
+          Row() {
+            Button(this.isLoading ? '推理中...' : '启动')
+              .backgroundColor($r('app.color.primary_blue'))
+              .fontColor(Color.White)
+              .borderRadius(8)
+              .onClick(() => {
+                this.triggerDetection();
+              })
+              .layoutWeight(1)
+
+            Button('清空面板')
+              .margin({ left: 10 })
+              .backgroundColor($r('app.color.card_background'))
+              .fontColor($r('app.color.text_primary'))
+              .borderRadius(8)
+              .onClick(() => {
+                this.clearResult();
+              })
+              .layoutWeight(1)
+          }
+          .width('90%')
+          .height(40)
+          .margin({ bottom: 18 })
+
+          // 结果展示区
+          Column() {
+            Text('AI 分析结果')
+              .fontSize(16)
+              .fontWeight(FontWeight.Medium)
+              .margin({ bottom: 10 })
+              .width('100%')
+              .textAlign(TextAlign.Start)
+
+            Scroll() {
+              Text(this.resultText)
+                .fontSize(14)
+                .fontColor($r('app.color.text_primary'))
+                .textAlign(TextAlign.Start)
+                .width('100%')
+            }
+            .width('100%')
+            .height(200)
+            .border({ width: 1, color: '#dddddd', style: BorderStyle.Solid })
+            .borderRadius(8)
+            .padding(12)
+          }
+          .width('90%')
+          .padding(16)
+          .backgroundColor($r('app.color.card_background'))
+          .borderRadius(8)
+          .margin({ bottom: 20 })
+        }
+        .width('100%')
+        .alignItems(HorizontalAlign.Center)
+      }
+      .layoutWeight(1)
+      .width('100%')
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#ffffff')
   }
 }
-

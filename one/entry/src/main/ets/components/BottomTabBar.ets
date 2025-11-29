@@ -40,16 +40,22 @@ export struct BottomTabBar {
               .width(24)
               .height(24)
               .scale({ x: this.currentIndex === index ? 1.2 : 1.0, y: this.currentIndex === index ? 1.2 : 1.0 })
-              .animation({ duration: 200 })
+              .animation({ 
+                duration: 300,
+                curve: Curve.EaseInOut
+              })
           } else {
             Text(item.name)
               .fontSize(this.currentIndex === index ? 24 : 20)
               .scale({ x: this.currentIndex === index ? 1.2 : 1.0, y: this.currentIndex === index ? 1.2 : 1.0 })
-              .animation({ duration: 200 })
+              .animation({ 
+                duration: 300,
+                curve: Curve.EaseInOut
+              })
           }
 
           Text(item.name)
-            .fontColor(this.currentIndex === index ? '#007DFF' : '#999999')
+            .fontColor(this.currentIndex === index ? $r('app.color.nav_icon_selected') : $r('app.color.nav_icon_unselected'))
             .fontSize(12)
         }
         .onClick(() => {
@@ -61,7 +67,7 @@ export struct BottomTabBar {
       }, (item: TabItem) => item.name)
     }
     .height(56)
-    .backgroundColor('#FFFFFF')
+    .backgroundColor($r('app.color.nav_background'))
     .border({ 
       width: { top: 1 },
       color: '#EEEEEE',
