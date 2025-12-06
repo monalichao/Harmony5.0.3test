@@ -1,5 +1,7 @@
 {
   "src": [
-    "pages/Main"
+    "pages/Main",
+    "pages/MindSpore",
+    "pages/control"
   ]
 }

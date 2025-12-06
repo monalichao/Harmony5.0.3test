@@ -5,6 +5,11 @@
   "main": "",
   "author": "",
   "license": "",
-  "dependencies": {}
+  "dependencies": {
+    "@ohos/fastble": "^2.0.5",
+    "@pura/picker_utils": "^1.0.2"
+  }
 }
+
+
 
