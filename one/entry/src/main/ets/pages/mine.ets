@@ -36,7 +36,7 @@ export struct Mine {
       onClick: () => {
         // 跳转到AI助手页面
         router.pushUrl({
-          url: 'pages/ai'
+          url: 'pages/AIchat'
         }).catch((error: Error) => {
           promptAction.showToast({
             message: '页面跳转失败',

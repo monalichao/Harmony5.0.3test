@@ -4,6 +4,7 @@
     "pages/MindSpore",
     "pages/control",
     "pages/Login",
-    "pages/Register"
+    "pages/Register",
+    "pages/AIchat"
   ]
 }

@@ -171,7 +171,7 @@ export struct Home {
         // 使用相对布局放置图标
         RelativeContainer() {
           // 左侧0%到60%上侧0%到60%区域 - cameraback背景图标
-          Image($r('app.media.camaraback'))
+          Image($r('app.media.cameraback'))
             .width('55%')
             .height('67%')
             .id("cameraback")
@@ -186,7 +186,7 @@ export struct Home {
             })
 
           // 在cameraback图标上显示摄像头状态图标（根据连接状态切换）
-          Image(this.isConnected ? $r('app.media.camara_open') : $r('app.media.camara_close'))
+          Image(this.isConnected ? $r('app.media.camera_open') : $r('app.media.camera_close'))
             .width('40%')
             .height('40%')
             .id("cameraStatus")
@@ -433,6 +433,7 @@ export struct Home {
           .onClick(() => {
             // 未来实现
           })
+
         }
         .width('90%').height(100).margin({ bottom: 30 })
 
