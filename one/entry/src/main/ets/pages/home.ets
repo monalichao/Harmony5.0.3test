@@ -159,10 +159,210 @@ export struct Home {
 
   build() {
     Column() {
-      Text('OpenArk 灵枢')
-        .fontSize(20)
-        .fontColor($r('app.color.primary_blue'))
-        .margin({ top: 20, bottom: 30 })
+      // 水下机器人状态文字
+      Text('水下机器人状态')
+        .fontSize(32)
+        .fontColor(Color.Black)
+        .margin({ top: 20,bottom: 5,left: 30 })
+        .alignSelf(ItemAlign.Start)
+
+      // 添加圆角正方形框，填充#EDEEF0颜色，占据屏幕上部分3/8的大小
+      Column() {
+        // 使用相对布局放置图标
+        RelativeContainer() {
+          // 左侧0%到60%上侧0%到60%区域 - cameraback背景图标
+          Image($r('app.media.camaraback'))
+            .width('55%')
+            .height('67%')
+            .id("cameraback")
+            .alignRules({
+              top: { anchor: "__container__", align: VerticalAlign.Top },
+              left: { anchor: "__container__", align: HorizontalAlign.Start }
+            })
+            .borderRadius(10)
+            .margin({ 
+              top: '2.5%',
+              left: '4%'
+            })
+
+          // 在cameraback图标上显示摄像头状态图标（根据连接状态切换）
+          Image(this.isConnected ? $r('app.media.camara_open') : $r('app.media.camara_close'))
+            .width('40%')
+            .height('40%')
+            .id("cameraStatus")
+            .alignRules({
+              top: { anchor: "cameraback", align: VerticalAlign.Top },
+              left: { anchor: "cameraback", align: HorizontalAlign.Start }
+            })
+            .margin({ 
+              top: '7%',
+              left: '8%'
+            })
+            .objectFit(ImageFit.Contain)
+
+          // 在cameraback图标内部下侧显示摄像头连接状态文字
+          Text(this.isConnected ? '摄像头已连接' : '摄像头未连接')
+            .fontSize(16)
+            .fontColor(Color.Black)
+            .id("cameraText")
+            .alignRules({
+              bottom: { anchor: "cameraback", align: VerticalAlign.Bottom },
+              left: { anchor: "cameraback", align: HorizontalAlign.Start }
+            })
+            .align(Alignment.Center)
+            .margin({ 
+              bottom: '5%',
+              left: '16%'
+            })
+
+          // 右侧0%到40%上侧0%到35%区域 - lanyaback背景图标
+          Image($r('app.media.lanyaback'))
+            .width('35%')
+            .height('35%')
+            .id("lanyaback")
+            .alignRules({
+              top: { anchor: "__container__", align: VerticalAlign.Top },
+              right: { anchor: "__container__", align: HorizontalAlign.End }
+            })
+            .borderRadius(10)
+            .margin({ 
+              top: '2.5%',
+              right: '2.5%'
+            })
+
+          // 在lanyaback图标上显示蓝牙状态图标（根据连接状态切换）
+          Image(this.isConnected ? $r('app.media.lanya_open') : $r('app.media.lanya_close'))
+            .width('22%')
+            .height('20%')
+            .id("bluetoothStatus")
+            .alignRules({
+              top: { anchor: "lanyaback", align: VerticalAlign.Top },
+              right: { anchor: "lanyaback", align: HorizontalAlign.End }
+            })
+            .margin({ 
+              top: '5%',
+              right: '7%'
+            })
+            .objectFit(ImageFit.Contain)
+
+          // 在lanyaback图标内部下侧显示蓝牙连接状态文字
+          Text(this.isConnected ? '蓝牙已连接' : '蓝牙未连接')
+            .fontSize(16)
+            .fontColor(Color.White)
+            .id("bluetoothText")
+            .alignRules({
+              bottom: { anchor: "lanyaback", align: VerticalAlign.Bottom },
+              left: { anchor: "lanyaback", align: HorizontalAlign.Start }
+            })
+            .align(Alignment.Center)
+            .margin({ 
+              bottom: '1%',
+              left: '8%'
+            })
+
+          // 右侧0%到40%上侧35%到60%区域 - battery背景图标
+          Image($r('app.media.battery'))
+            .width('35%')
+            .height('28%')
+            .id("battery")
+            .alignRules({
+              top: { anchor: "lanyaback", align: VerticalAlign.Bottom },
+              right: { anchor: "__container__", align: HorizontalAlign.End }
+            })
+            .borderRadius(10)
+            .margin({ 
+              top: '4%',
+              right: '3.5%'
+            })
+
+          // 在battery图标上显示电池状态图标
+          Image($r('app.media.battery2'))
+            .width('30%')
+            .height('20%')
+            .id("batteryStatus")
+            .alignRules({
+              top: { anchor: "battery", align: VerticalAlign.Top },
+              right: { anchor: "battery", align: HorizontalAlign.End }
+            })
+            .margin({ 
+              top: '5%',
+              right: '3%'
+            })
+            .objectFit(ImageFit.Contain)
+
+          // 在battery图标内部显示电量信息
+          Text('剩余电量')
+            .fontSize(16)
+            .fontColor(Color.Black)
+            .alignSelf(ItemAlign.Start)
+            .alignRules({
+              top: { anchor: "battery", align: VerticalAlign.Top },
+              left: { anchor: "battery", align: HorizontalAlign.Start },
+            })
+            .margin({
+              top: '1.5%',
+              left: '11%'
+            })
+
+          Text(this.isConnected ? '50%' : '未连接')
+            .fontSize(16)
+            .fontColor(Color.Black)
+            .alignSelf(ItemAlign.Start)
+            .alignRules({
+              bottom: { anchor: "battery", align: VerticalAlign.Bottom },
+              left: { anchor: "battery", align: HorizontalAlign.Start }
+            })
+            .margin({
+              bottom: '7%',
+              left: '11%'
+            })
+
+          // 右侧0%到40%上侧60%到100%区域 - settings_icon图标
+          Image($r('app.media.settings_icon'))
+            .width('35%')
+            .height('20%')
+            .id("settings_icon")
+            .alignRules({
+              top: { anchor: "battery", align: VerticalAlign.Bottom },
+              right: { anchor: "__container__", align: HorizontalAlign.End }
+            })
+            .borderRadius(10)
+            .margin({ 
+              top: '4%',
+              right: '3%',
+              bottom: '2.5%'
+            })
+
+          // 左侧0%到60%上侧60%到100%区域 - usetime_back图标
+          Image($r('app.media.usetime_back'))
+            .width('55%')
+            .height('20%')
+            .id("usetime_back")
+            .alignRules({
+              top: { anchor: "cameraback", align: VerticalAlign.Bottom },
+              left: { anchor: "__container__", align: HorizontalAlign.Start }
+            })
+            .borderRadius(10)
+            .margin({ 
+              top: '4.5%',
+              left: '3%',
+              bottom: '2.5%'
+            })
+        }
+        .width('100%')
+        .height('100%')
+      }
+      .width('90%')
+      .height('50%')
+      .backgroundColor('#EDEEF0')
+      .borderRadius(20)
+      .margin({ 
+        top: 5, 
+        bottom: 20, 
+        left: 20, 
+        right: 20 
+      })
+      .alignSelf(ItemAlign.Center)
 
       Column() {
         Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.SpaceBetween }) {
